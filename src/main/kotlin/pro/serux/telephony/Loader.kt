@@ -33,7 +33,6 @@ object Loader {
         commandClient = CommandClientBuilder()
             .setPrefixes(prefix)
             .registerDefaultParsers()
-            .addCustomParser(java.lang.Long::class.java, LongParser())
             .addCustomParser(Member::class.java, MemberOrEmpty())
             .addEventListeners(FlightEventAdapter())
             .configureDefaultHelpCommand { showParameterTypes = true }
