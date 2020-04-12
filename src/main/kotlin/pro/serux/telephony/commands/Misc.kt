@@ -8,8 +8,8 @@ import pro.serux.telephony.Loader
 
 class Misc : Cog {
     private fun abbreviate(s: String): String {
-        if (s.length > 20) {
-            return s.substring(0, 17) + "..."
+        if (s.length > 25) {
+            return s.substring(0, 22) + "..."
         }
 
         return s
@@ -39,10 +39,12 @@ class Misc : Cog {
         val guilds = Database.phonebookList().mapNotNull(Loader.shardManager::getGuildById)
         val builder = StringBuilder("```\n")
 
-        builder.append(String.format("%-20s | Number\n", "Server Name"))
+        builder.append(String.format("%-25s | Number\n", "Server Name"))
+        builder.append("-".repeat(46))
+        builder.append("\n")
 
         for (guild in guilds) {
-            builder.append(String.format("%-20s   %s\n", abbreviate(guild.name), guild.id))
+            builder.append(String.format("%-25s   %s\n", abbreviate(guild.name), guild.id))
         }
 
         builder.append("```")

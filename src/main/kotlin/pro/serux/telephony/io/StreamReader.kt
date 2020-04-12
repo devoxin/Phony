@@ -1,12 +1,11 @@
-package pro.serux.telephony.misc
+package pro.serux.telephony.io
 
 import java.io.InputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.util.*
 import kotlin.experimental.and
 
-class StreamBuffer {
+class StreamReader {
     private val fuckMyLife: ByteArray
     val length: Int get() = fuckMyLife.size
 
@@ -35,9 +34,11 @@ class StreamBuffer {
     fun readUInt32BE(offset: Int) = ByteBuffer.wrap(read(offset, 4)).order(ByteOrder.BIG_ENDIAN).int
     fun readUInt32LE(offset: Int) = ByteBuffer.wrap(read(offset, 4)).order(ByteOrder.LITTLE_ENDIAN).int
 
-    fun section(offset: Int, len: Short) = StreamBuffer(fuckMyLife.copyOfRange(offset, offset + len))
-    fun section(offset: Int, len: Int) = StreamBuffer(fuckMyLife.copyOfRange(offset, offset + len))
-    fun section(offset: Int) = StreamBuffer(read(offset, length - offset - 1))
+    fun section(offset: Int, len: Short) =
+        StreamReader(fuckMyLife.copyOfRange(offset, offset + len))
+    fun section(offset: Int, len: Int) =
+        StreamReader(fuckMyLife.copyOfRange(offset, offset + len))
+    fun section(offset: Int) = StreamReader(read(offset, length - offset - 1))
 
     fun toByteArray() = fuckMyLife
     override fun toString() = String(fuckMyLife)

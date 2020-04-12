@@ -20,4 +20,4 @@ out/
 # CUstom files
 phony.db
 config.properties
-tone.dca
+*.dca

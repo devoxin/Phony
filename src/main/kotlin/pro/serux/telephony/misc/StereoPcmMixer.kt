@@ -1,4 +1,4 @@
-package pro.serux.telephony.audio
+package pro.serux.telephony.misc
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
