@@ -6,12 +6,10 @@ import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder
 import net.dv8tion.jda.api.sharding.ShardManager
 import pro.serux.telephony.audio.DCAReader
-import pro.serux.telephony.audio.OggOpusReader
 import pro.serux.telephony.listeners.EmptyVcListener
 import pro.serux.telephony.listeners.FlightEventAdapter
 import pro.serux.telephony.parsers.memberorempty.Member
 import pro.serux.telephony.parsers.memberorempty.MemberOrEmpty
-import kotlin.system.exitProcess
 
 object Loader {
 
