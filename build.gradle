@@ -42,7 +42,6 @@ dependencies {
     implementation 'com.zaxxer:HikariCP:3.4.1'
 
     compile 'org.reflections:reflections:0.9.11'
-    compileOnly "net.java.dev.jna:jna:4.4.0"
 }
 
 compileKotlin {
