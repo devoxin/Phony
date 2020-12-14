@@ -1,8 +1,8 @@
 package pro.serux.telephony.commands
 
-import me.devoxin.flight.annotations.Command
+import me.devoxin.flight.api.annotations.Command
 import me.devoxin.flight.api.Context
-import me.devoxin.flight.models.Cog
+import me.devoxin.flight.api.entities.Cog
 import pro.serux.telephony.Database
 import pro.serux.telephony.Loader
 
@@ -63,4 +63,13 @@ class Misc : Cog {
         ctx.send("Done. This server is no longer discoverable.")
     }
 
+    @Command(description = "Displays bot information.")
+    fun info(ctx: Context) {
+        ctx.send {
+            setColor(0xCD3B3B)
+            setTitle("Phony | A cross-server voice communication bot")
+            addField("Servers", Loader.shardManager.guildCache.size().toString(), false)
+            setFooter("Developed by devoxin#0001")
+        }
+    }
 }

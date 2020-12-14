@@ -1,8 +1,8 @@
 package pro.serux.telephony.parsers.memberorempty
 
 import me.devoxin.flight.api.Context
-import me.devoxin.flight.parsers.MemberParser
-import me.devoxin.flight.parsers.Parser
+import me.devoxin.flight.internal.parsers.MemberParser
+import me.devoxin.flight.internal.parsers.Parser
 import java.util.*
 
 class MemberOrEmpty : Parser<Member> {

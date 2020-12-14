@@ -1,13 +1,12 @@
 package pro.serux.telephony.commands
 
-import me.devoxin.flight.annotations.Command
+import me.devoxin.flight.api.annotations.Command
 import me.devoxin.flight.api.Context
-import me.devoxin.flight.models.Cog
+import me.devoxin.flight.api.entities.Cog
 import pro.serux.telephony.Database
 import pro.serux.telephony.misc.Experiments
 
 class Experiments : Cog {
-
     @Command(aliases = ["showexp", "exp"], description = "Shows all available experiments.", guildOnly = true)
     fun experiments(ctx: Context) {
         val maxLength = Experiments.values().map { it.name.length }.max()!!
@@ -77,5 +76,4 @@ class Experiments : Cog {
         val value = flags and experiment.rawValue.inv()
         Database.setExperiments(guildId, value)
     }
-
 }

@@ -34,7 +34,7 @@ dependencies {
     implementation 'net.dv8tion:JDA:4.1.1_109'
 
     // Command Handler
-    implementation 'com.github.Devoxin:Flight:1.6.0'
+    implementation 'com.github.Devoxin:Flight:2.0.8'
 
     implementation 'ch.qos.logback:logback-classic:1.2.3'
 
