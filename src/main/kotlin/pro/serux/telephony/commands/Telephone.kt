@@ -1,8 +1,8 @@
 package pro.serux.telephony.commands
 
-import me.devoxin.flight.annotations.Command
 import me.devoxin.flight.api.Context
-import me.devoxin.flight.models.Cog
+import me.devoxin.flight.api.annotations.Command
+import me.devoxin.flight.api.entities.Cog
 import pro.serux.telephony.Database
 import pro.serux.telephony.Loader
 import pro.serux.telephony.audio.Line
@@ -10,7 +10,6 @@ import pro.serux.telephony.audio.LineTone
 import pro.serux.telephony.entities.CallManager
 import pro.serux.telephony.misc.Experiments
 import pro.serux.telephony.parsers.memberorempty.Member
-
 
 class Telephone : Cog {
     @Command(description = "Starts a call with another server.", guildOnly = true)
@@ -149,5 +148,4 @@ class Telephone : Cog {
     companion object {
         val callManager = CallManager()
     }
-
 }

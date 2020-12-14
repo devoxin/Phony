@@ -1,8 +1,8 @@
 package pro.serux.telephony.commands
 
-import me.devoxin.flight.annotations.Command
+import me.devoxin.flight.api.annotations.Command
 import me.devoxin.flight.api.Context
-import me.devoxin.flight.models.Cog
+import me.devoxin.flight.api.entities.Cog
 import pro.serux.telephony.audio.Clip
 import pro.serux.telephony.audio.Recorder
 import pro.serux.telephony.io.DCAReader
@@ -10,7 +10,6 @@ import pro.serux.telephony.io.DCAWriter
 import java.io.File
 
 class Voicemail : Cog {
-
     private val recorders = hashMapOf<Long, DCAWriter>()
 
     @Command(description = "Record a voicemail message.")
@@ -64,5 +63,4 @@ class Voicemail : Cog {
             sendingHandler = clip
         }
     }
-
 }

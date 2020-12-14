@@ -12,7 +12,6 @@ import pro.serux.telephony.parsers.memberorempty.Member
 import pro.serux.telephony.parsers.memberorempty.MemberOrEmpty
 
 object Loader {
-
     val bootTime = System.currentTimeMillis()
 
     var isDebug = false
@@ -48,7 +47,7 @@ object Loader {
             setGuildSubscriptionsEnabled(false)
         }.build()
 
-        commandClient.registerCommands("pro.serux.telephony.commands")
+        commandClient.commands.register("pro.serux.telephony.commands")
     }
 
 }
