@@ -5,7 +5,6 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 class CallManager {
-    private val timer = Executors.newSingleThreadScheduledExecutor()
     private val calls = ConcurrentHashMap<Long, Call>()
 
     fun isLineEngaged(guildId: Long): Boolean {
@@ -40,16 +39,6 @@ class CallManager {
     fun setup(callerId: Long, callerGuild: Long, receiverGuild: Long): Call {
         val call = Call(callerId, callerGuild, receiverGuild)
         calls[callerGuild] = call
-
-        timer.schedule({
-            if (call.status == CallStatus.CALLING) {
-                call.notifyCaller("Call ended; nobody answered.")
-                call.notifyReceiver("Call ended; nobody answered.")
-                call.end()
-
-                remove(call)
-            }
-        }, 30, TimeUnit.SECONDS)
 
         return call
     }

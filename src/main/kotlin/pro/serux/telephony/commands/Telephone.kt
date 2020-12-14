@@ -8,6 +8,7 @@ import pro.serux.telephony.Loader
 import pro.serux.telephony.audio.Line
 import pro.serux.telephony.audio.LineTone
 import pro.serux.telephony.entities.CallManager
+import pro.serux.telephony.entities.CallStatus
 import pro.serux.telephony.misc.Experiments
 import pro.serux.telephony.parsers.memberorempty.Member
 
@@ -91,6 +92,10 @@ class Telephone : Cog {
 
         val call = callManager.getCallFor(ctx.guild!!.idLong)
             ?: return
+
+        if (call.status == CallStatus.CALLING && call.receiverGuildId == ctx.guild!!.idLong) {
+            return call.reject()
+        }
 
         call.end()
 
