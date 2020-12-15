@@ -20,7 +20,7 @@ class CallManager {
     }
 
     fun getIncomingCall(receiver: Long): Call? {
-        return calls.values.firstOrNull { it.receiverGuildId == receiver }
+        return calls.values.firstOrNull { it.receiverGuildId == receiver && it.status == CallStatus.CALLING }
     }
 
     fun getOutgoingCall(caller: Long): Call? {
