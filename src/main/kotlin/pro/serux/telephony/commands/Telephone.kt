@@ -93,7 +93,11 @@ class Telephone : Cog {
         val call = callManager.getCallFor(ctx.guild!!.idLong)
             ?: return
 
-        if (call.status == CallStatus.CALLING && call.receiverGuildId == ctx.guild!!.idLong) {
+        if (call.status != CallStatus.CALLING && !call.isCaller(ctx.guild!!.idLong)) {
+            return ctx.send("There is no outgoing/incoming call.")
+        }
+
+        if (call.receiverGuildId == ctx.guild!!.idLong && call.status == CallStatus.CALLING) {
             return call.reject()
         }
 

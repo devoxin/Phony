@@ -112,6 +112,8 @@ class Call(
             return future
         }
 
+        status = CallStatus.ANSWERING_MACHINE
+
         val audio = DCAReader().loadDcaFile(File("${receiverGuildId}.dca").inputStream())
         val clip = Clip(audio.opusAudioChunks)
         val callerGuild = Loader.shardManager.getGuildById(callerGuildId)
