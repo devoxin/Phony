@@ -34,7 +34,7 @@ class Call(
             if (status == CallStatus.CALLING) {
                 reject()
             }
-        }, 10, TimeUnit.SECONDS) // TODO: 30
+        }, 30, TimeUnit.SECONDS)
     }
 
     fun isCaller(guildId: Long): Boolean {
