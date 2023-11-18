@@ -60,20 +60,15 @@ class Experiments : Cog {
         ctx.send("Successfully opted out of `${ex.name}`.")
     }
 
-    private fun isOptedInto(experiment: Experiments, guildId: Long): Boolean {
-        val value = Database.experimentsFor(guildId)
-        return (value and experiment.rawValue) == experiment.rawValue
-    }
+    private fun isOptedInto(experiment: Experiments, guildId: Long) = experiment.isEnabled(Database.experimentsFor(guildId))
 
     private fun optInto(experiment: Experiments, guildId: Long) {
-        val flags = Database.experimentsFor(guildId)
-        val value = flags or experiment.rawValue
+        val value = Database.experimentsFor(guildId) or experiment.rawValue
         Database.setExperiments(guildId, value)
     }
 
     private fun optOutOf(experiment: Experiments, guildId: Long) {
-        val flags = Database.experimentsFor(guildId)
-        val value = flags and experiment.rawValue.inv()
+        val value = Database.experimentsFor(guildId) and experiment.rawValue.inv()
         Database.setExperiments(guildId, value)
     }
 }

@@ -1,28 +1,20 @@
 package pro.serux.telephony.io
 
 import java.io.File
+import java.io.FileOutputStream
 
+// Class for writing DCA0 files.
 class DCAWriter(fileName: String) {
-
-    private val file = File(fileName)
-
-    private val writer = StreamWriter()
-    private val segments = mutableListOf<ByteArray>()
+    private val writer = StreamWriter(File(fileName).outputStream())
 
     // TODO: Filter silence
 
     fun addOpusSegment(byteArray: ByteArray) {
-        segments.add(byteArray)
+        writer.writeInt16LE(byteArray.size)
+        writer.writeArray(byteArray)
     }
 
-    fun save() {
-        for (segment in segments) {
-            writer.writeInt16LE(segment.size)
-            writer.writeArray(segment)
-        }
-
-        val output = writer.flush()
-        file.writeBytes(output)
+    fun finish() {
+        writer.finish()
     }
-
 }

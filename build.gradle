@@ -21,7 +21,7 @@ mainClassName = "pro.serux.telephony.Loader"
 repositories {
     jcenter()
     mavenCentral()
-    maven { url 'http://jitpack.io' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {

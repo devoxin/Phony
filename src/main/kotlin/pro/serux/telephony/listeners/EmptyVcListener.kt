@@ -19,9 +19,9 @@ class EmptyVcListener : EventListener {
 
     private fun checkEmptyVoice(guild: Guild) {
         val call = Telephone.callManager.getCallFor(guild.idLong)
-        val callChannel = guild.audioManager.connectedChannel
+        val callChannel = guild.audioManager.connectedChannel?.takeIf { it.members.none { m -> !m.user.isBot } }
 
-        if (call != null && call.status != CallStatus.CALLING && (callChannel == null || callChannel.members.none { !it.user.isBot })) {
+        if (call != null && call.status != CallStatus.CALLING && callChannel == null) {
             call.notifyCaller("Call ended; the phone was abandoned.")
             call.notifyReceiver("Call ended; the phone was abandoned.")
             call.end()

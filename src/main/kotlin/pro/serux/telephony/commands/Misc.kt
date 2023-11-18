@@ -69,7 +69,7 @@ class Misc : Cog {
             setColor(0xCD3B3B)
             setTitle("Phony | A cross-server voice communication bot")
             addField("Servers", Loader.shardManager.guildCache.size().toString(), false)
-            setFooter("Developed by devoxin#0001")
+            setFooter("Developed by devoxin")
         }
     }
 }

@@ -2,20 +2,20 @@ package pro.serux.telephony.audio;
 
 import java.nio.ByteBuffer;
 import java.nio.ShortBuffer;
+import java.util.Arrays;
 
 import static java.nio.ByteOrder.BIG_ENDIAN;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 
 public class StereoPcmAudioMixer {
-  private final int[] mixBuffer;
+  private final short[] mixBuffer;
   private final byte[] outputBuffer;
   private final ShortBuffer wrappedOutput;
-  private final Multiplier previousMultiplier = new Multiplier();
-  private final Multiplier currentMultiplier = new Multiplier();
+  private final Multiplier multiplier = new Multiplier();
   boolean hasData = false;
 
   public StereoPcmAudioMixer(int sampleCount, boolean isBigEndian) {
-    this.mixBuffer = new int[sampleCount * 2];
+    this.mixBuffer = new short[sampleCount * 2];
     this.outputBuffer = new byte[sampleCount * 4];
     this.wrappedOutput = ByteBuffer.wrap(outputBuffer)
             .order(isBigEndian ? BIG_ENDIAN : LITTLE_ENDIAN)
@@ -23,16 +23,18 @@ public class StereoPcmAudioMixer {
   }
 
   public void reset() {
+    Arrays.fill(mixBuffer, (short) 0);
     hasData = false;
   }
 
   public void add(byte[] data) {
     if (data != null) {
       ShortBuffer inputBuffer = ByteBuffer.wrap(data)
-              .order(BIG_ENDIAN)// : LITTLE_ENDIAN)
+              .order(BIG_ENDIAN) // we receive big endian pcm samples
               .asShortBuffer();
 
       if (!hasData) {
+        inputBuffer.get(mixBuffer);
         for (int i = 0; i < mixBuffer.length; i++) {
           mixBuffer[i] = inputBuffer.get(i);
         }
@@ -49,21 +51,18 @@ public class StereoPcmAudioMixer {
   public byte[] get() {
     updateMultiplier();
 
-    if (!currentMultiplier.identity || !previousMultiplier.identity) {
-      for (int i = 0; i < 10; i++) {
-        float gradientMultiplier = (currentMultiplier.value * i + previousMultiplier.value * (10 - i)) * 0.1f;
-        wrappedOutput.put(i, (short) coerceIn(gradientMultiplier * mixBuffer[i], -32767, 32767));
+    if (multiplier.requiresAdjusting()) {
+      for (int i = 0; i < mixBuffer.length; i++) { // i = 10
+        wrappedOutput.put(i, coerceIn(mixBuffer[i] * multiplier.adjustment, -32768, 32767));
       }
 
-      for (int i = 10; i < mixBuffer.length; i++) {
-        wrappedOutput.put(i, (short) coerceIn(currentMultiplier.value * mixBuffer[i], -32767, 32767));
-      }
-
-      previousMultiplier.identity = currentMultiplier.identity;
-      previousMultiplier.value = currentMultiplier.value;
+//      for (int i = 0; i < 10; i++) {
+//        float gradientMultiplier = (currentMultiplier.value * i + previousMultiplier.value * (10 - i)) * 0.1f;
+//        wrappedOutput.put(i, (short) coerceIn(gradientMultiplier * mixBuffer[i], -32767, 32767));
+//      }
     } else {
       for (int i = 0; i < mixBuffer.length; i++) {
-        wrappedOutput.put(i, (short) coerceIn(mixBuffer[i], -32767, 32767));
+        wrappedOutput.put(i, coerceIn(mixBuffer[i], -32768, 32767));
       }
     }
 
@@ -72,33 +71,34 @@ public class StereoPcmAudioMixer {
   }
 
   private void updateMultiplier() {
-    int peak = 0;
+    short peak = 0;
 
     if (hasData) {
-      for (int value : mixBuffer) {
-        peak = Math.max(peak, Math.abs(value));
+      for (short value : mixBuffer) {
+        peak = (short) Math.max(peak, Math.abs(value));
       }
     }
 
-    if (peak > 32768) {
-      currentMultiplier.identity = false;
-      currentMultiplier.value = 32768.0f / peak;
-    } else {
-      currentMultiplier.identity = true;
-      currentMultiplier.value = 1.0f;
-    }
+    multiplier.setAdjustmentForPeak(peak);
   }
 
-  private float coerceIn(float value, float min, float max) {
+  private short coerceIn(float value, int min, int max) {
     if (value < min) {
-      return min;
+      return (short) min;
     } else {
-      return Math.min(value, max);
+      return (short) Math.min(value, max);
     }
   }
 
   private static class Multiplier {
-    private boolean identity = true;
-    private float value = 1.0f;
+    private float adjustment = 1.0f;
+
+    public void setAdjustmentForPeak(short peak) {
+      this.adjustment = (float) 32767 / peak;
+    }
+
+    public boolean requiresAdjusting() {
+      return adjustment != 1.0f;
+    }
   }
 }
