@@ -35,7 +35,7 @@ class Voicemail : Cog {
             return ctx.send("Not recording")
         }
 
-        recorders[ctx.guild!!.idLong]?.save()
+        recorders[ctx.guild!!.idLong]?.finish()
         ctx.guild!!.audioManager.apply {
             receivingHandler = null
             closeAudioConnection()
